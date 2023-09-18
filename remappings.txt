@@ -1,3 +1,7 @@
-ds-test/=lib/forge-std/lib/ds-test/src/
+@libraries/=src/libraries/
+@enums/=src/enums/
 forge-std/=lib/forge-std/src/
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
+ds-test/=lib/forge-std/lib/ds-test/src/
+@contracts/token/=src/contracts/token/ERC1155
+@structs/=src/structs/
