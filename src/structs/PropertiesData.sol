@@ -2,9 +2,8 @@
 pragma solidity ^0.8.20;
 
 import {PropertyType} from "@enums/PropertyType.sol";
-import {BookingData} from "@structs/BookingData.sol";
 
-struct PropertyData {
+struct PropertiesData {
     string uri;
     uint256 rentPerDay;
     string description;
@@ -12,5 +11,4 @@ struct PropertyData {
     PropertyType propertyType;
     string realWorldAddress;
     address blockchainAddress;
-    mapping(uint256 => BookingData) bookings;
 }

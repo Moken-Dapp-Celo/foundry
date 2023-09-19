@@ -1,7 +1,9 @@
-@libraries/=src/libraries/
-@enums/=src/enums/
-forge-std/=lib/forge-std/src/
 @openzeppelin/contracts/=lib/openzeppelin-contracts/contracts/
 ds-test/=lib/forge-std/lib/ds-test/src/
-@contracts/token/=src/contracts/token/ERC1155
+forge-std/=lib/forge-std/src/
+@libraries/=src/libraries/
+@contracts/=src/contracts/
+@utils/=script/utils/
 @structs/=src/structs/
+@enums/=src/enums/
+@setup/=script/utils/setup

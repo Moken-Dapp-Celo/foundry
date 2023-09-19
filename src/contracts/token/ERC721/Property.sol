@@ -9,7 +9,7 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 
-contract MyToken is ERC721, ERC721URIStorage, Ownable, AccessControl {
+contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
     using Counters for Counters.Counter;
 
     PropertyData public property;
@@ -18,10 +18,23 @@ contract MyToken is ERC721, ERC721URIStorage, Ownable, AccessControl {
 
     bytes32 public constant OWNER_ROLE = keccak256("OWNER_ROLE");
 
-    error bookingFailed(uint256 day, address tenant);
-    error invalidValueForRent(uint256 day, address tenant, uint256 value);
+    event NewBooking(uint256 day, address tenant);
+    event BookingError(uint256 day, address tenant);
 
-    constructor(string memory _uri, uint256 _rentPerDay, string memory _description, PropertyType _propertyType, address _propertyOwner, string memory _realWorldAddress) ERC721("MyToken", "MTK") {
+    event CheckIn(uint256 day, address tenant);
+    event ErrorCheckIn(uint256 day, address tenant);
+
+    error BookingFailed(uint256 day, address tenant);
+    error InvalidValueForRent(uint256 day, address tenant, uint256 value);
+
+    constructor(
+        string memory _uri,
+        uint256 _rentPerDay,
+        string memory _description,
+        PropertyType _propertyType,
+        address _propertyOwner,
+        string memory _realWorldAddress
+    ) ERC721("MyToken", "MTK") {
         property.uri = _uri;
         property.rentPerDay = _rentPerDay;
         property.description = _description;
@@ -39,20 +52,26 @@ contract MyToken is ERC721, ERC721URIStorage, Ownable, AccessControl {
 
     function booking(uint256 _day) public payable {
         if (msg.value != property.rentPerDay) {
-            revert invalidValueForRent(_day, msg.sender, msg.value);
+            emit BookingError(_day, msg.sender);
+            revert InvalidValueForRent(_day, msg.sender, msg.value);
         }
 
         if (property.bookings[_day].status == true) {
-            revert bookingFailed(_day, msg.sender);
+            emit BookingError(_day, msg.sender);
+            revert BookingFailed(_day, msg.sender);
         }
 
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, property.uri);
+
+        emit NewBooking(_day, msg.sender);
     }
 
-    function _burn(uint256 tokenId) internal override(ERC721, ERC721URIStorage) {
+    function _burn(
+        uint256 tokenId
+    ) internal override(ERC721, ERC721URIStorage) {
         super._burn(tokenId);
     }
 
@@ -64,24 +83,24 @@ contract MyToken is ERC721, ERC721URIStorage, Ownable, AccessControl {
         property.rentPerDay = _rentPerDay;
     }
 
-    function checkHosting(uint256 day, address _tenant) public view returns (bool) {
-        if (property.bookings[day].tenant == _tenant){
+    function checkIn(uint256 day, address _tenant) public returns (bool) {
+        if (property.bookings[day].tenant == _tenant) {
+            emit CheckIn(day, _tenant);
             return true;
         } else {
             return false;
         }
     }
 
-    function tokenURI(uint256 tokenId)
-        public
-        view
-        override(ERC721, ERC721URIStorage)
-        returns (string memory)
-    {
+    function tokenURI(
+        uint256 tokenId
+    ) public view override(ERC721, ERC721URIStorage) returns (string memory) {
         return super.tokenURI(tokenId);
     }
 
-    function supportsInterface(bytes4 interfaceId)
+    function supportsInterface(
+        bytes4 interfaceId
+    )
         public
         view
         override(ERC721, ERC721URIStorage, AccessControl)
