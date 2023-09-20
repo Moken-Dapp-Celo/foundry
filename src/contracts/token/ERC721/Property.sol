@@ -22,8 +22,9 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
     event BookingError(uint256 day, address tenant);
 
     event CheckIn(uint256 day, address tenant);
-    event ErrorCheckIn(uint256 day, address tenant);
+    event CheckInError(uint256 day, address tenant);
 
+    error CheckInFailed(uint256 day, address tenant);
     error BookingFailed(uint256 day, address tenant);
     error InvalidValueForRent(uint256 day, address tenant, uint256 value);
 
@@ -83,12 +84,12 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
         property.rentPerDay = _rentPerDay;
     }
 
-    function checkIn(uint256 day, address _tenant) public returns (bool) {
+    function checkIn(uint256 day, address _tenant) public {
         if (property.bookings[day].tenant == _tenant) {
             emit CheckIn(day, _tenant);
-            return true;
         } else {
-            return false;
+            emit CheckInError(day, _tenant);
+            revert CheckInFailed(day, _tenant);
         }
     }
 
