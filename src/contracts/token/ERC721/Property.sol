@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.19;
 
-import {PropertyType} from "@enums/PropertyType.sol";
 import {PropertyData} from "@structs/PropertyData.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
@@ -32,7 +31,7 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
         string memory _uri,
         uint256 _rentPerDay,
         string memory _description,
-        PropertyType _propertyType,
+        string memory _propertyType,
         address _propertyOwner,
         string memory _realWorldAddress
     ) ERC721("MyToken", "MTK") {
@@ -51,12 +50,7 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
         _grantRole(OWNER_ROLE, _newOwner);
     }
 
-    function booking(uint256 _day) public payable {
-        if (msg.value != property.rentPerDay) {
-            emit BookingError(_day, msg.sender);
-            revert InvalidValueForRent(_day, msg.sender, msg.value);
-        }
-
+    function booking(uint256 _day) public {
         if (property.bookings[_day].status == true) {
             emit BookingError(_day, msg.sender);
             revert BookingFailed(_day, msg.sender);

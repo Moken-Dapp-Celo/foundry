@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.19;
 
-import {PropertyType} from "@enums/PropertyType.sol";
 import {PropertiesData} from "@structs/PropertiesData.sol";
 import {Property} from "@contracts/token/ERC721/Property.sol";
 import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
@@ -16,12 +15,12 @@ contract Moken {
     event NewProperty(address indexed newMyTokenAddress, address indexed owner);
 
     function newProperty(
-        string memory _uri,
+        string calldata _uri,
         uint256 _rentPerDay,
-        string memory _description,
-        PropertyType _propertyType,
+        string calldata _description,
+        string calldata _propertyType,
         address _propertyOwner,
-        string memory _realWorldAddress
+        string calldata _realWorldAddress
     ) public returns (address) {
         Property property = new Property(
             _uri,

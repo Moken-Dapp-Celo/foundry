@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.20;
+pragma solidity 0.8.19;
 
-import {PropertyType} from "@enums/PropertyType.sol";
 import {BookingData} from "@structs/BookingData.sol";
 
 struct PropertyData {
@@ -9,7 +8,7 @@ struct PropertyData {
     uint256 rentPerDay;
     string description;
     address propertyOwner;
-    PropertyType propertyType;
+    string propertyType;
     string realWorldAddress;
     address blockchainAddress;
     mapping(uint256 => BookingData) bookings;
