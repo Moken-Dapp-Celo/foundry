@@ -84,13 +84,8 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
         property.rentPerDay = _rentPerDay;
     }
 
-    function checkIn(uint256 day, address _tenant) public {
-        if (property.bookings[day].tenant == _tenant) {
-            emit CheckIn(day, _tenant);
-        } else {
-            emit CheckInError(day, _tenant);
-            revert CheckInFailed(day, _tenant);
-        }
+    function checkIn(uint256 day, address _tenant) public view returns (bool) {
+       return property.bookings[day].tenant == _tenant;
     }
 
     function tokenURI(
