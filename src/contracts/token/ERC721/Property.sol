@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
+import {BookingData} from "@structs/BookingData.sol";
 import {PropertyData} from "@structs/PropertyData.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
@@ -14,6 +15,8 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
     PropertyData public property;
 
     Counters.Counter private _tokenIdCounter;
+
+    mapping(uint256 => BookingData) public bookings;
 
     bytes32 public constant OWNER_ROLE = keccak256("OWNER_ROLE");
 
@@ -51,7 +54,7 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
     }
 
     function booking(uint256 _day) public {
-        if (property.bookings[_day].status == true) {
+        if (bookings[_day].status == true) {
             emit BookingError(_day, msg.sender);
             revert BookingFailed(_day, msg.sender);
         }
@@ -79,7 +82,7 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
     }
 
     function checkIn(uint256 day, address _tenant) public view returns (bool) {
-       return property.bookings[day].tenant == _tenant;
+       return bookings[day].tenant == _tenant;
     }
 
     function tokenURI(
