@@ -16,8 +16,6 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
 
     Counters.Counter private _tokenIdCounter;
 
-    mapping(uint256 => BookingData) public bookings;
-
     bytes32 public constant OWNER_ROLE = keccak256("OWNER_ROLE");
 
     event NewBooking(uint256 day, address tenant);
@@ -54,7 +52,7 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
     }
 
     function booking(uint256 _day) public {
-        if (bookings[_day].status == true) {
+        if (property.bookings[_day].status == true) {
             emit BookingError(_day, msg.sender);
             revert BookingFailed(_day, msg.sender);
         }
@@ -63,6 +61,11 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
         _tokenIdCounter.increment();
         _safeMint(msg.sender, tokenId);
         _setTokenURI(tokenId, property.uri);
+
+        property.bookings[_day] = BookingData({
+            tenant: msg.sender,
+            status: true
+        });
 
         emit NewBooking(_day, msg.sender);
     }
@@ -82,7 +85,7 @@ contract Property is ERC721, ERC721URIStorage, Ownable, AccessControl {
     }
 
     function checkIn(uint256 day, address _tenant) public view returns (bool) {
-       return bookings[day].tenant == _tenant;
+       return property.bookings[day].tenant == _tenant;
     }
 
     function tokenURI(
