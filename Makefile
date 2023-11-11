@@ -3,7 +3,7 @@
 
 .PHONY: moken property
 
-# DEFAULT VARIABLES	
+# DEFAULT VARIABLES
 START_LOG = @echo "==================== START OF LOG ===================="
 END_LOG = @echo "==================== END OF LOG ======================"
 
