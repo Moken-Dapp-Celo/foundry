@@ -19,18 +19,10 @@ contract DeployLilium is Script {
             uint256 _rentPerDay,
             address _owner
         ) = helperConfig.propertyArgs();
+        address moken = 0x0002Af258b86fAAC590630BB2a07740576E134b8;
 
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-        Moken moken = new Moken();
-        address property = moken.newProperty(
-            _name,
-            _symbol,
-            _uri,
-            _token,
-            _rentPerDay,
-            _owner
-        );
-        vm.stopBroadcast();
-        console.log("Moken address:", address(moken), "Property address:", property);
+        address property = Moken(moken).newProperty(_name, _symbol, _uri, _token, _rentPerDay, _owner);
+        console.log("Property address:", property);
     }
 }

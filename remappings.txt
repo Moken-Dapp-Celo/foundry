@@ -8,3 +8,4 @@ forge-std/=lib/forge-std/src/
 @enums/=src/enums/
 @setup/=script/utils/setup
 @mocks/=test/mocks
+@interfaces/=src/interfaces/

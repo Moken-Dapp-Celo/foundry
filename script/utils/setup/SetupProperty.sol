@@ -23,9 +23,9 @@ contract SetupProperty is Script {
         celoPropertyArgs = PropertyArgs({
             name: "Moken Property",
             symbol: "MKP",
-            uri: "QmSnz3AgD8JACWCBnbob5UM3RSigLPaNSaiP2sWMUf4TPM",
-            token: address(0),
-            rentPerDay: 1000,
+            uri: "https://ipfs.io/ipfs/QmXiQTGp9aKAVrvCF8U7X8dnytXvf5Z44EVA2UPeTEV9gT/5.json",
+            token: 0x765DE816845861e75A25fCA122bb6898B8B1282a,
+            rentPerDay: 340,
             owner: 0xFb05c72178c0b88BFB8C5cFb8301e542A21aF1b7
         });
     }
