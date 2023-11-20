@@ -64,3 +64,6 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+
+Moken Contract on Mainnet: 0x96d281fd702AFA2E4B87545727bba39776D1a5F2
