@@ -1,42 +1,35 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.19;
 
-import {PropertiesData} from "@structs/PropertiesData.sol";
-import {Property} from "@contracts/token/ERC721/Property.sol";
-import {Counters} from "@openzeppelin/contracts/utils/Counters.sol";
+import {Property} from "@contracts/nft/ERC721/Property.sol";
 
 contract Moken {
-    using Counters for Counters.Counter;
-
-    Counters.Counter public _propertyCounter;
-
     address[] public properties;
 
-    event NewProperty(address indexed newMyTokenAddress, address indexed owner);
+    event NewProperty(address indexed property, address indexed owner);
 
     function newProperty(
+        string memory _name,
+        string memory _symbol,
         string calldata _uri,
+        address _token,
         uint256 _rentPerDay,
-        string calldata _description,
-        string calldata _propertyType,
-        address _propertyOwner,
-        string calldata _realWorldAddress
+        address _owner
     ) public returns (address) {
         Property property = new Property(
+            _name,
+            _symbol,
             _uri,
+            _token,
             _rentPerDay,
-            _description,
-            _propertyType,
-            _propertyOwner,
-            _realWorldAddress
+            _owner
         );
         properties.push(address(property));
-        _propertyCounter.increment();
-        emit NewProperty(address(property), _propertyOwner);
+        emit NewProperty(address(property), _owner);
         return address(property);
     }
 
-    function getPropertyCounter() public view returns (uint256) {
-        return _propertyCounter.current();
+    function getAllProperties() public view returns (address[] memory) {
+        return properties;
     }
 }

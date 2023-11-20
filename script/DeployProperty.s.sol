@@ -12,23 +12,23 @@ contract DeployLilium is Script {
 
     function run() external {
         (
+            string memory _name,
+            string memory _symbol,
             string memory _uri,
+            address _token,
             uint256 _rentPerDay,
-            string memory _description,
-            address _propertyOwner,
-            string memory _propertyType,
-            string memory _realWorldAddress
+            address _owner
         ) = helperConfig.propertyArgs();
 
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
         Moken moken = new Moken();
         address property = moken.newProperty(
+            _name,
+            _symbol,
             _uri,
+            _token,
             _rentPerDay,
-            _description,
-            _propertyType,
-            _propertyOwner,
-            _realWorldAddress
+            _owner
         );
         vm.stopBroadcast();
         console.log("Moken address:", address(moken), "Property address:", property);

@@ -11,22 +11,22 @@ contract SetupProperty is Script {
     mapping(uint256 => PropertyArgs) public chainIdToNetworkConfig;
 
     constructor() {
-        chainIdToNetworkConfig[383414847825] = getZeniqPropertyArgs();
+        chainIdToNetworkConfig[44787] = getCeloPropertyArgs();
         propertyArgs = chainIdToNetworkConfig[block.chainid];
     }
 
-    function getZeniqPropertyArgs()
+    function getCeloPropertyArgs()
         internal
         pure
-        returns (PropertyArgs memory zeniqPropertyArgs)
+        returns (PropertyArgs memory celoPropertyArgs)
     {
-        zeniqPropertyArgs = PropertyArgs({
+        celoPropertyArgs = PropertyArgs({
+            name: "Moken Property",
+            symbol: "MKP",
             uri: "QmSnz3AgD8JACWCBnbob5UM3RSigLPaNSaiP2sWMUf4TPM",
-            rentPerDay: 1, 
-            description: "Room Size: 593 sq.ft. / 55 sq.m; Bed Type: One King Bed", 
-            propertyOwner: 0xB847c0d4f2508373CdF06Cc1988a403C705aF6fb,
-            propertyType: "house",
-            realWorldAddress: "Av. Atlantica, 4240 - Copacabana, Rio de Janeiro - RJ, 22070-002"
+            token: address(0),
+            rentPerDay: 1000,
+            owner: 0xFb05c72178c0b88BFB8C5cFb8301e542A21aF1b7
         });
     }
 }
